@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/project")
 public class ProjectController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     ProjectRepository repository;
 
-    @RequestMapping("/initialize")
     public String index() {
         logger.info("Resetting the Tables");
         repository.deleteAll();
