@@ -3,6 +3,8 @@ package com.example.demo;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.Set;
 
 @Entity
 public class Project {
@@ -11,6 +13,9 @@ public class Project {
     private Long id;
     private String name;
     private String description;
+
+    @ManyToMany
+    private Set<Technology> technologies;
 
     public Long getId() {
         return id;
@@ -34,5 +39,13 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Technology> getTechnologies() {
+        return technologies;
+    }
+
+    public void setTechnologies(Set<Technology> technologies) {
+        this.technologies = technologies;
     }
 }

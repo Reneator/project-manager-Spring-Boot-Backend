@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +35,7 @@ public class TechnologyController {
         return ResponseEntity.ok(repository.findAll());
     }
 
-    @ApiOperation("Get a  Technology By Id")
+    @ApiOperation("Get a Technology By Id")
     @GetMapping
     public ResponseEntity<Technology> getById(@RequestParam Long id) {
         Technology technology = repository.findById(id).get();
@@ -61,9 +60,9 @@ public class TechnologyController {
 
     @ApiOperation("Delete a Technology")
     @DeleteMapping()
-    public ResponseEntity<Technology> delete(@RequestBody Technology technology) {
-        repository.delete(technology);
-        return ResponseEntity.ok(technology);
+    public ResponseEntity<Technology> delete(@RequestParam Long id) {
+        repository.deleteById(id);
+        return ResponseEntity.ok().build();
 
     }
 
