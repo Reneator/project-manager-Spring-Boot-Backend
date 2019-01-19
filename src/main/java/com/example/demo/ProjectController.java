@@ -8,7 +8,9 @@ import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/project")
@@ -28,6 +30,17 @@ public class ProjectController {
         Example<Project> example = Example.of(project);
         Project projectReturn = repository.findOne(example).get();
         return ResponseEntity.ok(projectReturn);
+    }
+
+    @ApiOperation("Get Projects By Name contains With Streams")
+    @GetMapping("find")
+    public ResponseEntity<List<Project>> getByNameStream(@RequestParam @NotNull String name) {
+        List<Project> projects = repository.findAll();
+        List<Project> filteredProjects = projects.stream()
+                .filter(project -> project.getName().toLowerCase().contains(name.toLowerCase()))
+                .sorted()
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(filteredProjects);
     }
 
     @ApiOperation("Get all Projects")
