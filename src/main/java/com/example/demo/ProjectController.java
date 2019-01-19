@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/project")
 public class ProjectController {
@@ -33,7 +34,7 @@ public class ProjectController {
     }
 
     @ApiOperation("Get Projects By Name contains With Streams")
-    @GetMapping("find")
+    @GetMapping("find/contains")
     public ResponseEntity<List<Project>> getByNameStream(@RequestParam @NotNull String name) {
         List<Project> projects = repository.findAll();
         List<Project> filteredProjects = projects.stream()
