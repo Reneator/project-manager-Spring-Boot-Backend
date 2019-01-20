@@ -9,11 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -47,7 +45,6 @@ public class ProjectController {
         List<Project> projects = repository.findAll();
         List<Project> filteredProjects = projects.stream()
                 .filter(project -> project.getName().toLowerCase().contains(name.toLowerCase()))
-                .sorted()
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredProjects);
     }
@@ -70,9 +67,8 @@ public class ProjectController {
     public ResponseEntity create(@RequestBody Project project) {
         try {
             return ResponseEntity.ok(repository.save(project));
-        }
-        catch(ConstraintViolationException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("There already exists a Project with the name "+ project.getName()+ " !");
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("There already exists a Project with the name " + project.getName() + " !");
         }
     }
 
