@@ -1,9 +1,7 @@
 package com.example.demo;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -11,6 +9,9 @@ public class Project {
     @GeneratedValue
     @Id
     private Long id;
+
+    @Column(unique = true)
+    @NotNull
     private String name;
     private String description;
 
@@ -19,6 +20,14 @@ public class Project {
 
     public Long getId() {
         return id;
+    }
+
+    public Project() {
+    }
+
+    public Project(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public void setId(Long id) {

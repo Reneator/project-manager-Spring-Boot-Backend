@@ -5,11 +5,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
+import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -23,14 +27,18 @@ public class ProjectController {
     @Autowired
     TechnologyRepository technologyRepository;
 
+    @Autowired
+    ProjectExceptionHandlerAdvice projectExceptionHandlerAdvice;
+
     @ApiOperation("Get a Project By Name")
     @GetMapping("find")
     public ResponseEntity<Project> getByName(@RequestParam String name) {
-        Project project = new Project();
-        project.setName(name);
-        Example<Project> example = Example.of(project);
-        Project projectReturn = repository.findOne(example).get();
-        return ResponseEntity.ok(projectReturn);
+        Project projectExample = new Project();
+        projectExample.setName(name);
+        Example<Project> example = Example.of(projectExample);
+        return repository.findOne(example)
+                .map(project -> ResponseEntity.ok().body(project))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @ApiOperation("Get Projects By Name contains With Streams")
@@ -59,8 +67,20 @@ public class ProjectController {
 
     @ApiOperation("Create a new Project")
     @PostMapping
-    public ResponseEntity<Project> create(@RequestBody Project project) {
-        return ResponseEntity.ok(repository.save(project));
+    public ResponseEntity create(@RequestBody Project project) {
+        try {
+            return ResponseEntity.ok(repository.save(project));
+        }
+        catch(ConstraintViolationException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("There already exists a Project with the name "+ project.getName()+ " !");
+        }
+    }
+
+    @ApiOperation("Create a new Project by Params")
+    @PostMapping("createparams")
+    public ResponseEntity createByParams(@RequestParam @NotNull String name, @RequestParam String description) {
+        Project project = new Project(name, description);
+        return create(project);
     }
 
     @ApiOperation("Add Technology to Project")

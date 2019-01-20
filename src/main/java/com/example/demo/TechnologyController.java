@@ -8,6 +8,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @CrossOrigin
@@ -46,6 +47,13 @@ public class TechnologyController {
     @ApiOperation("Create a new Technology")
     @PostMapping
     public ResponseEntity<Technology> create(@RequestBody Technology technology) {
+        return ResponseEntity.ok( repository.save(technology));
+    }
+
+    @ApiOperation("Create a new Technology By Params")
+    @PostMapping("createparams")
+    public ResponseEntity<Technology> createByParams(@RequestParam @NotNull String name, @RequestParam String description) {
+        Technology technology = new Technology(name, description);
         return ResponseEntity.ok( repository.save(technology));
     }
 
