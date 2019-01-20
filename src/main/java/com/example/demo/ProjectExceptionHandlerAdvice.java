@@ -11,7 +11,7 @@ import javax.validation.ConstraintViolationException;
 public class ProjectExceptionHandlerAdvice {
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity handleException(ConstraintViolationException e){
+    public ResponseEntity handleException(ConstraintViolationException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Object with this name already exists!");
     }
 }

@@ -1,8 +1,10 @@
 package com.example.demo;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Entity
 public class Project {
@@ -14,13 +16,8 @@ public class Project {
     @NotNull
     private String name;
     private String description;
-
-    @ManyToMany
-    private Set<Technology> technologies;
-
-    public Long getId() {
-        return id;
-    }
+    private String contractor;
+    private String client;
 
     public Project() {
     }
@@ -28,6 +25,17 @@ public class Project {
     public Project(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public Project(@NotNull String name, String description, String contractor, String client) {
+        this.name = name;
+        this.description = description;
+        this.contractor = contractor;
+        this.client = client;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
@@ -50,11 +58,20 @@ public class Project {
         this.description = description;
     }
 
-    public Set<Technology> getTechnologies() {
-        return technologies;
+
+    public String getContractor() {
+        return contractor;
     }
 
-    public void setTechnologies(Set<Technology> technologies) {
-        this.technologies = technologies;
+    public void setContractor(String contractor) {
+        this.contractor = contractor;
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
     }
 }

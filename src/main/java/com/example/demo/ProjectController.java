@@ -19,14 +19,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/project")
 public class ProjectController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     ProjectRepository repository;
-    @Autowired
-    TechnologyRepository technologyRepository;
 
     @Autowired
     ProjectExceptionHandlerAdvice projectExceptionHandlerAdvice;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @ApiOperation("Get a Project By Name")
     @GetMapping("find")
@@ -74,20 +72,20 @@ public class ProjectController {
 
     @ApiOperation("Create a new Project by Params")
     @PostMapping("createparams")
-    public ResponseEntity createByParams(@RequestParam @NotNull String name, @RequestParam String description) {
-        Project project = new Project(name, description);
+    public ResponseEntity createByParams(@RequestParam @NotNull String name, @RequestParam String description, @RequestParam String contractor, @RequestParam String client) {
+        Project project = new Project(name, description, contractor, client);
         return create(project);
     }
 
-    @ApiOperation("Add Technology to Project")
-    @PutMapping("addtechnology")
-    public ResponseEntity<Project> addTechnologyToProject(@RequestParam Long projectId, @RequestParam Long technologyId) {
-        Project project = repository.findById(projectId).get();
-        Technology technology = technologyRepository.findById(technologyId).get();
-
-        project.getTechnologies().add(technology);
-        return ResponseEntity.ok(repository.save(project));
-    }
+//    @ApiOperation("Add Technology to Project")
+//    @PutMapping("addtechnology")
+//    public ResponseEntity<Project> addTechnologyToProject(@RequestParam Long projectId, @RequestParam Long technologyId) {
+//        Project project = repository.findById(projectId).get();
+//        Technology technology = technologyRepository.findById(technologyId).get();
+//
+//        project.getTechnologies().add(technology);
+//        return ResponseEntity.ok(repository.save(project));
+//    }
 
 
     @ApiOperation("Update a Project")
